@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-		<title>SoccerGram</title>
+		<title>Kickoff</title>
 		<link href="lib/ionic/css/ionic.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">
 		<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
@@ -27,13 +27,13 @@
 		
 	</head>
 	<body ng-app="todo-app" ng-controller="MainController">
-		<ion-nav-bar class="bar-balanced">
+		<ion-nav-bar class="bar-calm">
 			<ion-nav-back-button></ion-nav-back-button>
 		</ion-nav-bar>
 		<ion-nav-view></ion-nav-view>
 		<script id="create-profile-modal" type="text/ng-template">
 			<ion-modal-view title="Profile">
-			<ion-header-bar class="bar-dark">
+			<ion-header-bar class="bar-calm">
 			<h1 class="title">Create a profile</h1>
 			<button class="button button-icon" ng-click="closeProfileDialogModal()">
 			<i class="icon ion-android-close"></i>
@@ -46,7 +46,9 @@
 			<div class="item item-divider">
 			Personal
 			</div>
-
+        
+             
+			<img ng-src={{profileImageUrl}} width="80px" height="100px" ng-click="uploadProfileImage()"></img>
 			<label class="item item-input">
 			<input ng-model="user.name" type="text" placeholder="Name">
 			</label>
@@ -68,17 +70,17 @@
 			Soccer
 			</div>
 			<label class="item item-input">
-			<input ng-model="user.tafkid" type="text" placeholder="Tafkid">
+			<input ng-model="user.position" type="text" placeholder="Position">
 			</label>
 
 			<label class="item item-input">
-			Strong Leg
+			Dominant Leg
 			</label>
 			<div class="button-bar" >
 
-			<ion-radio ng-model="user.strongLeg" ng-value="'Left'">Left</ion-radio>
-			<ion-radio ng-model="user.strongLeg" ng-value="'Right'">Right</ion-radio>
-			<ion-radio ng-model="user.strongLeg" ng-value="'Both'">Both</ion-radio>
+			<ion-radio ng-model="user.dominantLeg" ng-value="'Left'">Left</ion-radio>
+			<ion-radio ng-model="user.dominantLeg" ng-value="'Right'">Right</ion-radio>
+			<ion-radio ng-model="user.dominantLeg" ng-value="'Both'">Both</ion-radio>
 			</div>
 
 			<label class="item item-input">
