@@ -4,12 +4,6 @@
         <button class="button button-icon icon ion-camera" ng-click="upload()"></button>
     </ion-nav-buttons>
 <ion-content class="padding">
-	
-	
-	
-    
-    
-    
     <a class="item item-thumbnail-left" href="#">
       <img ng-src="{{profileImageUrl}}">
       <h1>{{user.family}}, {{user.name}}</h1>
@@ -20,5 +14,21 @@
       <h2>Dominant Leg, {{user.dominantLeg}}</h2>
 	  <h2><italic>{{user.description}}</italic></h2>
     </a>
+    
+    <div class="row" ng-repeat="image in images" ng-if="$index % 4 === 0">
+            <div class="col col-25" ng-if="$index < images.length">
+                <img ng-src="/img/db/{{images[$index]}}" width="100%" />
+            </div>
+            <div class="col col-25" ng-if="$index + 1 < images.length">
+                <img ng-src="/img/db/{{images[$index + 1]}}"  width="100%" />
+            </div>
+            <div class="col col-25" ng-if="$index + 2 < images.length">
+                <img ng-src="/img/db/{{images[$index + 2]}}"  width="100%" />
+            </div>
+            <div class="col col-25" ng-if="$index + 3 < images.length">
+                <img ng-src="/img/db/{{images[$index + 3]}}"  width="100%" />
+            </div>
+        </div>
+    
 	</ion-content>
 </ion-view>

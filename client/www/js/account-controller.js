@@ -1,5 +1,6 @@
-app.controller('AccountController', function ($scope, $ionicModal,UsersService,$cordovaCamera, $cordovaFileTransfer) { //store the entities name in a variable var taskData = 'task';
+app.controller('AccountController', function ($scope, $ionicModal,UsersService,MultimediaService,$cordovaCamera, $cordovaFileTransfer) { //store the entities name in a variable var taskData = 'task';
 $scope.profileImageUrl = '/img/profile.jpg';
+$scope.images = MultimediaService.getImages();
 $ionicModal.fromTemplateUrl('create-profile-modal', {
     scope: $scope,
     animation: 'slide-in-up'
