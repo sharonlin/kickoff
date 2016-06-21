@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<title>SoccerGram</title>
+		<link href="lib/ionic/css/ionic.css" rel="stylesheet">
+		<link href="css/style.css" rel="stylesheet">
+		<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+		<link href="css/ionic.app.css" rel="stylesheet">
+		-->
+		<!-- ionic/angularjs js -->
+		<script src="lib/ionic/js/ionic.bundle.js"></script>
+		<script src="lib/ngCordova/dist/ng-cordova.js"></script> 
+		<script src="lib/angular-local-storage/dist/angular-local-storage.js"></script>
+		<!-- cordova script (this will be a 404 during development) -->
+		<script src="cordova.js"></script>
+		<!-- your app's js -->
+		<script src="js/app.js"></script>
+		
+		<!--Services-->
+		<script src="js/services/users-service.js"></script>
+		
+		<script src="js/home-controller.js"></script>
+		<script src="js/account-controller.js"></script>
+		<script src="js/search-controller.js"></script>
+		
+	</head>
+	<body ng-app="todo-app" ng-controller="MainController">
+		<ion-nav-bar class="bar-balanced">
+			<ion-nav-back-button></ion-nav-back-button>
+		</ion-nav-bar>
+		<ion-nav-view></ion-nav-view>
+		<script id="create-profile-modal" type="text/ng-template">
+			<ion-modal-view title="Profile">
+			<ion-header-bar class="bar-dark">
+			<h1 class="title">Create a profile</h1>
+			<button class="button button-icon" ng-click="closeProfileDialogModal()">
+			<i class="icon ion-android-close"></i>
+			</button>
+			</ion-header-bar>
+
+			<ion-content>
+			<form ng-submit="saveProfile()">
+			<div class="list">
+			<div class="item item-divider">
+			Personal
+			</div>
+
+			<label class="item item-input">
+			<input ng-model="user.name" type="text" placeholder="Name">
+			</label>
+
+			<label class="item item-input">
+			<input ng-model="user.family" type="text" placeholder="Family">
+			</label>
+
+			<label class="item item-input">
+			<span class="input-label">Birthday</span>
+			<input ng-model="user.birthday" type="date">
+			</label>
+
+			<label class="item item-input">
+			<input ng-model="user.country" type="text" placeholder="Country">
+			</label>
+
+			<div class="item item-divider">
+			Soccer
+			</div>
+			<label class="item item-input">
+			<input ng-model="user.tafkid" type="text" placeholder="Tafkid">
+			</label>
+
+			<label class="item item-input">
+			Strong Leg
+			</label>
+			<div class="button-bar" >
+
+			<ion-radio ng-model="user.strongLeg" ng-value="'Left'">Left</ion-radio>
+			<ion-radio ng-model="user.strongLeg" ng-value="'Right'">Right</ion-radio>
+			<ion-radio ng-model="user.strongLeg" ng-value="'Both'">Both</ion-radio>
+			</div>
+
+			<label class="item item-input">
+			<textarea ng-model="user.description" rows="5" placeholder="A little bit on you..."></textarea>
+			</label>
+			<button type="submit" class="button  button-positive">Save Profile</button>
+			</div>
+			</form>
+			</ion-content>
+			</ion-modal-view>
+		</script>
+	</body>
+</html>

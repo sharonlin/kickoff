@@ -1,0 +1,28 @@
+<ion-view title="Profile">
+	<ion-content class="padding">
+	<button class="button button-icon" ng-click="openProfileDialogModal()">
+        <i class="icon ion-compose"></i>
+    </button>
+    <button class="button button-icon" ng-click="upload()">
+        <i class="icon ion-upload"></i>
+    </button>
+		<div class="list ">
+			<div class="item item-divider">
+				Personal
+			</div>
+
+			<a class="item" href="#"> {{user.name}} </a>
+			<a class="item" href="#"> {{user.family}} </a>
+			<a class="item" href="#"> {{user.birthday}} </a>
+			<a class="item" href="#"> {{user.country}} </a>
+
+			<div class="item item-divider">
+				Soccer
+			</div>
+			<a class="item" href="#"> {{user.tafkid}} </a>
+
+			<label class="item"> Strong Leg: {{user.strongLeg}} </label>
+			<label class="item">{{user.description}} </label>
+		</div>
+	</ion-content>
+</ion-view>

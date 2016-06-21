@@ -1,0 +1,16 @@
+<ion-view title="Home">
+	<ion-content class="padding">
+		<div class="list card" ng-repeat="user in users track by $index">
+			<div class="item item-divider">
+				<span ng-bind="user.name"></span>
+				<span ng-bind="user.family"></span>
+			</div>
+			<div class="item item-body">
+				<strong><span ng-bind="user.name"></span></strong>
+				<p>
+					<span ng-bind="user.country"></span>
+				</p>
+			</div>
+		</div>
+	</ion-content>
+</ion-view>

@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "kickoff server",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharonlin/kickoff.git"
+  },
+  "author": "slin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharonlin/kickoff/issues"
+  },
+  "homepage": "https://github.com/sharonlin/kickoff#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
