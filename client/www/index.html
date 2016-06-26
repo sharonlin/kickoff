@@ -13,6 +13,8 @@
 		<script src="lib/ionic/js/ionic.bundle.js"></script>
 		<script src="lib/ngCordova/dist/ng-cordova.js"></script> 
 		<script src="lib/angular-local-storage/dist/angular-local-storage.js"></script>
+		<script src="lib/firebase/firebase.js"></script>
+		<script src="lib/angularfire/dist/angularfire.min.js"></script>	
 		<!-- cordova script (this will be a 404 during development) -->
 		<script src="cordova.js"></script>
 		<!-- your app's js -->
@@ -22,15 +24,21 @@
 		<script src="js/services/multimedia-service.js"></script>
 		<script src="js/services/users-service.js"></script>
 		
+		<script src="js/login-controller.js"></script>
 		<script src="js/home-controller.js"></script>
 		<script src="js/account-controller.js"></script>
 		<script src="js/search-controller.js"></script>
+		
 		
 	</head>
 	<body ng-app="todo-app" ng-controller="MainController">
 		<ion-nav-bar class="bar-calm">
 			<ion-nav-back-button></ion-nav-back-button>
-		</ion-nav-bar>
+			<ion-nav-buttons side="right">
+				<button class="button" ng-click="logout()" ng-show='currentUser'>logout</button>
+    		</ion-nav-buttons>
+		     </ion-nav-bar>
+		     
 		<ion-nav-view></ion-nav-view>
 		<script id="create-profile-modal" type="text/ng-template">
 			<ion-modal-view title="Profile">
