@@ -1,0 +1,26 @@
+<ion-view title="Login">
+    <ion-content>
+        <div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input ng-model="email" type="text" placeholder="Email" />
+                </label>
+                <label class="item item-input">
+                    <input ng-model="password" type="password" placeholder="Password" />
+                </label>
+                <button class="button button-block button-assertive icon-center logo-google" ng-click="loginWithGoogle()">
+        			Google
+      			</button>
+      			 <button class="button button-block button-positive icon-center logo-facebook" ng-click="loginWithFacebook()">
+        			Facebook
+      			</button>
+            </div>
+            <div class="padding-left padding-right">
+                <div class="button-bar">
+                    <button class="button button-calm" ng-click="login(email, password)">Login</button>
+                    <button class="button button-calm" ng-click="signup(email, password)">Signup</button>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
