@@ -1,6 +1,11 @@
-app.controller('AccountController', function ($scope, $ionicModal,UsersService,MultimediaService,$cordovaCamera, $cordovaFileTransfer) { //store the entities name in a variable var taskData = 'task';
+app.controller('AccountController', function ($scope, $ionicModal,UsersService,PostsService, MultimediaService, $cordovaCamera, $cordovaFileTransfer) { //store the entities name in a variable var taskData = 'task';
+console.log('account controller');
 $scope.profileImageUrl = '/img/profile.jpg';
-$scope.images = MultimediaService.getImages();
+
+PostsService.getUserFeedPosts(firebase.auth().currentUser.uid).then(function(pageData){
+    $scope.posts = Object.keys(pageData.entries).map(function(key){return pageData.entries[key];});
+})
+
 $ionicModal.fromTemplateUrl('create-profile-modal', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -35,40 +40,52 @@ $scope.saveProfile = function(){
 	$scope.profileDialogModal.hide();
 };
 
-$scope.upload = function() {
+    $scope.upload = function () {
 
-    var options = {
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
-        sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
-        mediaType: Camera.MediaType.ALLMEDIA,
-        saveToPhotoAlbum: true
+        var options = {
+            quality: 50,
+            //destinationType: Camera.DestinationType.FILE_URI,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.SAVEDPHOTOALBUM,
+            mediaType: Camera.MediaType.ALLMEDIA,
+            allowEdit: true,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: false
 
-    };
+        };
+         
 
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-        console.log("img URI= " + imageData);        
-        //Here you will be getting image data 
-        _uploadFileToServer();
-    }, function(err) {
-        alert("Failed because: " + err);
-        console.log('Failed because: ' + err);
-    });
+    return $cordovaCamera.getPicture(options).then(
+            function(imageData) {
+                    $scope.testCameraImage = imageData;
+                        return MultimediaService.uploadImage (imageData).then(
+                                function (data) {
+                                    return PostsService.createPost(data);
+                                    
+                                });
+                            }, function(err) {
+                                alert("Failed because: " + err);
+                                console.log('Failed because: ' + err);
+                            });
 
 };
-function _uploadFileToServer(uri) {
-        var options = {
-            fileKey: "avatar",
-            fileName: "image.png",
-            chunkedMode: false,
-            mimeType: "image/png"
-        };
-        $cordovaFileTransfer.upload("http://localhost:3000/file/upload", uri, options).then(function(result) {
-            console.log("SUCCESS: " + JSON.stringify(result.response));
-        }, function(err) {
-            console.log("ERROR: " + JSON.stringify(err));
-        }, function (progress) {
-            // constant progress updates
-        });
-    };
+
+ 
+// function _uploadFileToServer(uri) {
+//         var options = {
+//             fileKey: "avatar",
+//             fileName: "image.png",
+//             chunkedMode: false,
+//             mimeType: "image/png"
+//         };
+//         $cordovaFileTransfer.upload("http://localhost:3000/file/upload", uri, options).then(function(result) {
+//             console.log("SUCCESS: " + JSON.stringify(result.response));
+//         }, function(err) {
+//             console.log("ERROR: " + JSON.stringify(err));
+//         }, function (progress) {
+//             // constant progress updates
+//         });
+//     };
  });
