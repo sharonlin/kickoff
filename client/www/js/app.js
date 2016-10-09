@@ -4,15 +4,15 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 var app = angular.module('todo-app', ['ionic', 'firebase', 'LocalStorageModule', 'ngCordova']);
-app.config(function(localStorageServiceProvider) {
+app.config(function (localStorageServiceProvider) {
 	localStorageServiceProvider.setPrefix('kickoff');
 });
 
 
-app.config(function($stateProvider, $urlRouterProvider, $provide) {
+app.config(function ($stateProvider, $urlRouterProvider, $provide) {
 
-	$provide.decorator('$exceptionHandler', ['$delegate', function($delegate) {
-		return function(exception, cause) {
+	$provide.decorator('$exceptionHandler', ['$delegate', function ($delegate) {
+		return function (exception, cause) {
 			$delegate(exception, cause);
 
 			var data = {
@@ -41,7 +41,7 @@ app.config(function($stateProvider, $urlRouterProvider, $provide) {
 	}]);
 
 	// catch exceptions out of angular
-	window.onerror = function(message, url, line, col, error) {
+	window.onerror = function (message, url, line, col, error) {
 		var stopPropagation = true;
 		var data = {
 			type: 'javascript',
@@ -74,58 +74,62 @@ app.config(function($stateProvider, $urlRouterProvider, $provide) {
 	};
 
 	$stateProvider
-	// setup an abstract state for the tabs directive
+		// setup an abstract state for the tabs directive
 		.state('tab', {
 			url: '/tab',
 			abstract: true,
-			templateUrl: 'tabs.html'
+			templateUrl: 'tabs.html',
+			data: { requireLogin: true }
 		})
 
-	// Each tab has its own nav history stack:
+		// Each tab has its own nav history stack:
 
-	.state('tab.home', {
-		url: '/home',
-		views: {
-			'tab-home': {
-				templateUrl: 'home.html',
-				controller: 'HomeController'
+		.state('tab.home', {
+			url: '/home',
+			views: {
+				'tab-home': {
+					templateUrl: 'home.html',
+					controller: 'HomeController'
+				}
 			}
-		}
-	}).state('tab.search', {
-		url: '/search',
-		views: {
-			'tab-search': {
-				templateUrl: 'search.html',
-				controller: 'SearchController'
+		}).state('tab.search', {
+			url: '/search',
+			views: {
+				'tab-search': {
+					templateUrl: 'search.html',
+					controller: 'SearchController'
+				}
 			}
-		}
-	}).state('tab.search-detail', {
-		url: '/user/:userId',
-		views: {
-			'tab-search': {
-				templateUrl: 'user-detail.html',
-				controller: 'UserDetailController'
+		}).state('tab.search-detail', {
+			url: '/user/:userId',
+			views: {
+				'tab-search': {
+					templateUrl: 'user-detail.html',
+					controller: 'UserDetailController'
+				}
 			}
-		}
-	}).state('tab.account', {
-		url: '/account',
-		views: {
-			'tab-account': {
-				templateUrl: 'account.html',
-				controller: 'AccountController'
+		}).state('tab.account', {
+			url: '/account',
+			views: {
+				'tab-account': {
+					templateUrl: 'account.html',
+					controller: 'AccountController'
+				}
 			}
-		}
-	}).state('login', {
-		url: '/login',
-		templateUrl: 'login.html',
-		controller: 'LoginController'
-	});
+		}).state('login', {
+			url: '/login',
+			templateUrl: 'login.html',
+			controller: 'LoginController',
+			data: {
+				requireLogin: false
+			}
+		});
 	// if none of the above states are matched, use this as the fallback
 	$urlRouterProvider.otherwise('login');
 
 });
 
-app.run(function($ionicPlatform, $state, $rootScope, UsersService) {
+app.run(function ($ionicPlatform, $state, $rootScope, UsersService) {
 
 	var config = {
 		apiKey: 'AIzaSyAVQhpKHo0cN3gYiPG5hmZw9-_iFjMG1oM',
@@ -134,25 +138,39 @@ app.run(function($ionicPlatform, $state, $rootScope, UsersService) {
 		storageBucket: 'kickoff-6aff3.appspot.com',
 	};
 	firebase.initializeApp(config);
-	firebase.auth().onAuthStateChanged(function(user) {
+	firebase.auth().onAuthStateChanged(function (user) {
 		if (user) {
 			// User is signed in.
-			console.log('User loggedin');
+			console.log('User ' + user.displayName + ' loggedin');
 			console.dir(user);
-			$rootScope.currentUser = user;
-			UsersService.createUser(user).then(function() {
+			$rootScope.user = user;
+			//If already exist enrich data from DB
+			UsersService.getUser(user.uid).then(function (u) {
+				$rootScope.user = u.val();
+				$rootScope.user.birthday = new Date($rootScope.user.birthday);
 				$state.go('tab.home');
 			});
+
 
 		} else {
 			// No user is signed in.
 			console.log('No User signedin');
-			$rootScope.currentUser = user;
+			$rootScope.user = user;
 			$state.go('login');
 		}
 	});
 
-	$ionicPlatform.ready(function() {
+	$rootScope.$on("$stateChangeStart",
+        function (event, toState, toParams, fromState, fromParams) {
+            if (toState.data.requireLogin && !firebase.auth().currentUser) {
+                $state.go("login");
+                event.preventDefault();
+            }
+        });
+
+
+
+	$ionicPlatform.ready(function () {
 		if (window.cordova && window.cordova.plugins.Keyboard) {
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
@@ -169,13 +187,13 @@ app.run(function($ionicPlatform, $state, $rootScope, UsersService) {
 	});
 });
 
-app.controller('MainController', function($scope, UsersService) { //store the entities name in a variable var taskData = 'task';
-	$scope.user = UsersService.getUser();
-	$scope.users = UsersService.getUsers();
-	$scope.logout = function() {
-		firebase.auth().signOut().then(function() {
+app.controller('MainController', function ($scope, UsersService) { //store the entities name in a variable var taskData = 'task';
+	//$scope.user = UsersService.getUser();
+	//$scope.users = UsersService.getUsers();
+	$scope.logout = function () {
+		firebase.auth().signOut().then(function () {
 			// Sign-out successful.
-		}, function(error) {
+		}, function (error) {
 			// An error happened.
 		});
 	};

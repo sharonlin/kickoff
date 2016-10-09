@@ -101,6 +101,7 @@ var USER_PAGE_POSTS_PAGE_SIZE = 5;
 
   return {
     getUserFeedPosts: _getUserFeedPosts,
-    createPost: _createPost
+    createPost: _createPost,
+    getPost:_getPostData
   };
 }]); 
